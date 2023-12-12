@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <title>Vault</title>
+</head>
+
+<style> 
+
+  @keyframes show {
+    
+   From {
+      opacity: 0;
+    }
+
+    To {
+      opacity: 1;
+    }
+  }
+
+  @keyframes showMenu {
+    
+   From {
+      scale: .5;
+      transform-origin: left;
+      opacity: 0;
+    }
+
+    To {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hiddenModal {
+    
+   From {
+      opacity: 1;
+    }
+
+    To {
+      opacity: 0;
+    }
+  }
+
+  @keyframes showBoxAccounts {
+    From {
+      scale: .5;
+      opacity: 0;
+    }
+
+    To {
+      opacity: 1;
+    }
+  }
+
+  #modalAccounts {
+    transition: all .5s;
+  }
+
+  .ocultar {
+    display: none;
+  }
+
+  .boxAccounts {
+    opacity: 0;
+    animation: showBoxAccounts .3s ease forwards;
+    transition: all .5s ease;
+  }
+
+</style>
+
+<body class="bg-slate-700 relative">
+
+  <header class="flex items-center justify-between px-10 py-3 bg-slate-900">
+
+    <div>
+      <i class="ph-fill ph-keyhole text-blue-400 text-[50pt]"></i>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a class="bg-blue-400 px-4 py-2 font-semibold rounded-xl" href="">All</a>
+      <a class="bg-blue-400 px-4 py-2 font-semibold rounded-xl" href="">Folders</a>
+      <form class="bg-white rounded-xl flex " action="">
+        <input type="text" name="" class="border-none outline-none px-5 py-2 bg-transparent">
+        <button type="submit" class="bg-blue-400 flex items-center
+        justify-center px-3 rounded-r-xl text-[15pt]
+        hover:text-[20pt] hover:bg-blue-300 transition-all">
+          <i class="ph-duotone ph-magnifying-glass"></i>
+        </button>
+      </form>
+
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="flex flex-col items-center">
+        <i class="ph-duotone ph-user text-[25pt] text-blue-400"></i>
+        <p th:text="${username}" class="text-white font-semibold">nome</p>
+      </div>
+      <a href="/logout" class="bg-slate-800 text-red-300 w-10 h-10 flex
+      items-center justify-center rounded-full hover:bg-slate-600 transition-all">
+        <i class="ph-fill ph-sign-out text-[15pt]"></i>
+      </a>
+    </div>
+  </header>
+
+
+  <div class=" mx-auto mt-10 w-[70%] flex items-center justify-between gap-7 flex-wrap">
+
+    <div th:each="conta : ${contas}" class="boxAccounts w-[300px] flex items-center bg-slate-900
+                     rounded-[12px] transition-all relative">
+      <div class="contextMenu bg-slate-300 rounded-md p-1 absolute right-[-95px] ocultar">
+        <div class="flex flex-col gap-1">
+          <form class="w-full" action="" method="post">
+            <button class="w-full rounded-md font-semibold hover:bg-slate-100 transition-all px-3 py-2 flex gap-1 hover:gap-3"
+              type="submit">
+              <i class="ph-duotone ph-pencil-simple-line text-[18pt] text-yellow-700"></i>
+              <div>Editar</div>
+            </button>
+          </form>
+          <form class="w-full" action="" method="post">
+            <button class="w-full rounded-md font-semibold hover:bg-slate-100 transition-all px-3 py-2 flex gap-1 hover:gap-3"
+              type="submit">
+              <i class="ph-duotone ph-trash text-[18pt] text-red-600"></i>
+              <div>Deletar</div>
+            </button>
+          </form>
+        </div>
+    
+      </div>
+    
+      <div class="w-[100px] h-[100px] flex items-center justify-center">
+        <img class="w-[75%]" th:src="${conta.image}" alt="pic">
+      </div>
+      <div class="flex flex-col flex-1">
+        <header th:text="${conta.name}" class="py-3 text-center text-white font-semibold">
+          NAME
+        </header>
+        <div class="bg-slate-500 flex flex-col flex-1 px-4 py-4 gap-2 rounded-[0_0_12px_0]">
+          <div th:text="${conta.username}">Usuario</div>
+          <div th:text="${conta.password}">fçaksjdflaskdf</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button id="btnToModalAccounts" class="bg-slate-800 p-1 rounded-full hover:scale-[1.1] transition-all fixed right-[12px] bottom-[12px]">
+    <i class="ph-duotone ph-plus-circle text-[50pt] text-blue-400"></i>
+  </button>
+
+  <div id="modalAccounts" class="relative z-[10] opacity-0 ocultar" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+          <div class="bg-slate-700 px-4 pb-4 pt-7">
+            <div class="flex flex-col gap-4 items-center">
+              <div class="w-full flex items-center justify-center gap-2">
+                <i class="ph-duotone ph-plus-circle text-[40pt] text-blue-400"></i>
+                <h1 class="flex-1 text-white font-semibold text-[15pt]">Adicionar conta</h1>
+              </div>
+              <div class="mt-3 w-full">
+                <form id="formAccounts" action="/data/saves/accounts" method="post" class="flex flex-col w-full gap-4">
+
+                  <div class="flex w-full items-center gap-3">
+                    <div class="w-[50px] h-[50px] ">
+                      <img class="w-full h-full" src="https://img.icons8.com/?size=512&id=q1fuILsG4z8D&format=png&color=60A5FA" alt="picture" >
+                    </div>
+                    <div class="flex flex-col flex-1">
+                      <label class="text-white" for="image">Url da imagem</label>
+                      <input class="px-3 py-2 rounded outline-none border-none" type="text" name="image" id="image" placeholder="Digite o url da imagem (opcional)">
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col">
+                    <label class="text-white" for="nome">Nome</label>
+                    <input class="px-3 py-2 rounded outline-none border-none" type="text" id="nome" name="name" placeholder="Nome da conta" required>
+                  </div>
+
+                  <div class="flex flex-col">
+                    <label class="text-white" for="usuario">Usuario ou E-mail</label>
+                    <input required class="px-3 py-2 rounded outline-none border-none" type="text" id="usuario" name="username" placeholder="Usuario ou E-mail">
+                  </div>
+
+                  <div class="flex flex-col">
+                    <label class="text-white" for="senha">Senha</label>
+                    <input required class="px-3 py-2 rounded outline-none border-none" type="text" id="senha" name="password" placeholder="Senha">
+                  </div>
+
+                  <div class="bg-slate-800 flex items-center justify-center gap-4 mt-3">
+                    <button id="btnToReset" class="flex-1 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 transition-all">Cancelar</button>
+                    <button type="submit" class="flex-1 rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 transition-all">Adicionar</button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+<!--          <div class="bg-slate-800 px-4 py-3 flex items-center justify-center gap-4">-->
+<!--            <button id="btnToReset" class="flex-1 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 transition-all">Cancelar</button>-->
+<!--            <button id="btnToSubmit" class="flex-1 rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 transition-all">Adicionar</button>-->
+<!--          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var botaoModal = document.getElementById("btnToModalAccounts");
+
+  var modalAccounts = document.getElementById("modalAccounts");
+  var formulario = document.getElementById("formAccounts");
+  var botaoReset = document.getElementById("btnToReset");
+
+  console.log(modalAccounts)
+
+  botaoModal.onclick = () => {
+    console.log("OK");
+    modalAccounts.classList.remove("ocultar");
+    modalAccounts.style.animation = "show .5s forwards"
+  }
+
+  botaoReset.onclick = () => {
+    formulario.reset();
+    modalAccounts.style.animation = "hiddenModal .5s forwards";
+    setTimeout(function() {
+      modalAccounts.classList.add("ocultar");
+    }, 500)
+  }
+
+  var boxes = document.querySelectorAll(".boxAccounts")
+
+  console.log(boxes);
+
+  var delay = 0;
+  boxes.forEach(element => {
+    delay += 0.1;
+    element.style.animationDelay = delay + "s";
+  });
+
+  const contextsMenus = document.querySelectorAll(".contextMenu");
+
+  boxes.forEach((element, index) => {
+    element.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      boxes.forEach((e, i) => {
+        e.style.zIndex = "1";
+        e.style.filter = "blur(0px)";
+        if (!e.isEqualNode(boxes[index])) {
+          e.style.filter = "blur(7px)";
+        }
+      })
+      contextsMenus.forEach((e, i) => {
+        if(!e.isEqualNode(contextsMenus[index])) {
+          e.style.animation = "hiddenModal .5s forwards"
+          setTimeout(() => {
+            e.classList.add("ocultar");
+          }, 500)
+        }
+      })
+      boxes[index].style.zIndex = "1000";
+      contextsMenus[index].classList.remove("ocultar");
+      contextsMenus[index].style.animation = "showMenu .5s forwards";
+
+    })
+  })
+
+  document.addEventListener("click", e => {
+    contextsMenus.forEach(e => {
+      e.style.animation = "hiddenModal .5s forwards"
+      setTimeout(() => {
+        e.classList.add("ocultar");
+      }, 500)
+    })
+    boxes.forEach(e => {
+      e.style.filter = "blur(0px)";
+      e.style.zIndex = "1";
+    })
+  })
+
+
+</script>
+
+</body>
+</html>

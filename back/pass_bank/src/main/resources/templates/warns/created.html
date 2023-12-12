@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="refresh" content="3; URL='/'"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>Cadastrado</title>
+</head>
+
+<style>
+    @keyframes show {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body{
+        animation: show .5s ease;
+    }
+</style>
+
+<body class=" h-[100vh] bg-slate-700 relative">
+
+    <div class="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
+flex flex-col items-center gap-4">
+
+        <i class="ph-fill ph-check-circle text-[50pt] text-green-500"></i>
+
+        <p class="text-white text-[20pt] font-bold">
+            Usuario cadastrado com sucesso!
+        </p>
+
+        <p class="text-white">redirecionando...</p>
+
+
+    </div>
+
+</body>
+</html>
